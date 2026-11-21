@@ -1,0 +1,4 @@
+<?php require_once "../database/connexion.php"; $id=$_GET['id']; $forms=$pdo->query("SELECT * FROM formations")->fetchAll(); $q=$pdo->prepare("SELECT * FROM modules WHERE id_module=?"); $q->execute([$id]); $d=$q->fetch();
+if($_POST){ $pdo->prepare("UPDATE modules SET nom_module=?, volume_horaire=?, id_formation=? WHERE id_module=?")->execute([$_POST['nom'],$_POST['vol'],$_POST['form'],$id]); header("Location:index.php"); exit; }
+?>
+<form method="post"><h2>Modifier Module</h2>Nom: <input name="nom" value="<?=$d['nom_module']?>"><br><br>Volume: <input name="vol" value="<?=$d['volume_horaire']?>"><br><br>Formation: <select name="form"><?php foreach($forms as $f): ?><option value="<?=$f['id_formation']?>" <?=$f['id_formation']==$d['id_formation']?'selected':''?>><?=$f['nom_formation']?></option><?php endforeach; ?></select><br><br><button>Modifier</button></form>
